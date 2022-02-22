@@ -46,7 +46,7 @@ async function eslintInit(options) {
       installAlias,
       '-D',
       'eslint',
-      'eslint-config-airbnb',
+      'eslint-config-airbnb-base',
       'eslint-plugin-import',
       '@typescript-eslint/eslint-plugin',
       '@typescript-eslint/parser',
