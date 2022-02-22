@@ -21,9 +21,14 @@ async function run(cmds) {
 
 async function initTs(options) {
    await copy(options.templateDirectory.concat('/typescripts'), options.targetDirectory, { clobber: false });
-   const installAlias = options.packageManager === 'yarn' ? 'add' : 'install';
-   const installCommand = [options.packageManager, [installAlias, '-D', '@types/node', 'typescript', 'ts-node']];
-   return run(installCommand);
+
+   if (options.runInstall) {
+      const installAlias = options.packageManager === 'yarn' ? 'add' : 'install';
+      const installCommand = [options.packageManager, [installAlias, '-D', '@types/node', 'typescript', 'ts-node']];
+      return run(installCommand);
+   }
+
+   return null;
 }
 
 async function gitInit(options) {
@@ -40,27 +45,50 @@ async function gitInit(options) {
 
 async function eslintInit(options) {
    await copy(options.templateDirectory.concat('/eslint/.eslintrc.js'), options.targetDirectory.concat('/.eslintrc.js'), { clobber: false });
-   const installAlias = options.packageManager === 'yarn' ? 'add' : 'install';
 
-   const installlArgs = [
-      installAlias,
-      '-D',
-      'eslint',
-      'eslint-config-airbnb-base',
-      'eslint-plugin-import',
-      '@typescript-eslint/eslint-plugin',
-      '@typescript-eslint/parser',
-   ];
+   if (options.runInstall) {
+      const installAlias = options.packageManager === 'yarn' ? 'add' : 'install';
 
-   return run([options.packageManager, installlArgs]);
+      const installlArgs = [
+         installAlias,
+         '-D',
+         'eslint',
+         'eslint-config-airbnb-base',
+         'eslint-plugin-import',
+         '@typescript-eslint/eslint-plugin',
+         '@typescript-eslint/parser',
+      ];
+
+      return run([options.packageManager, installlArgs]);
+   }
+
+   return null;
 }
 
 async function nodemonInit(options) {
-   return copy(options.templateDirectory.concat('/nodemon'), options.targetDirectory, { clobber: false });
+   await copy(options.templateDirectory.concat('/nodemon'), options.targetDirectory, { clobber: false });
+
+   if (options.runInstall) {
+      const installAlias = options.packageManager === 'yarn' ? 'add' : 'install';
+
+      const installlArgs = [
+         installAlias,
+         '-D',
+         'nodemon',
+      ];
+
+      return run([options.packageManager, installlArgs]);
+   }
+
+   return null;
 }
 
 async function preCommitHookInit(options) {
    await copy(options.templateDirectory.concat('/preCommitHook'), options.targetDirectory.concat('/.git/hooks'), { clobber: false });
+}
+
+async function editorconfigInit(options) {
+   await copy(options.templateDirectory.concat('/editorconfig'), options.targetDirectory, { clobber: false });
 }
 
 export async function createTsProject(opts) {
@@ -101,6 +129,11 @@ export async function createTsProject(opts) {
          title: 'Integrate eslint',
          task: () => eslintInit(options),
          enabled: () => options.eslint,
+      },
+      {
+         title: 'Create .editorconfig file',
+         task: () => editorconfigInit(options),
+         enabled: () => options.editorconfig,
       },
       {
          title: 'Integrate nodemon',

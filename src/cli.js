@@ -43,7 +43,6 @@ function parserArgumentsIntoOptions(rawArgs) {
 
 // eslint-disable-next-line
 async function promptForMissingOptions(options) {
-   console.log({ options })
    const defaultOptions = {
       packageManager: 'pnpm',
    };
@@ -127,7 +126,7 @@ async function promptForMissingOptions(options) {
       questions.push({
          type: 'confirm',
          name: 'editorconfig',
-         message: 'create .editorconfig file ?',
+         message: 'Create .editorconfig file ?',
          default: false,
       });
    }
@@ -167,10 +166,6 @@ function showHelp() {
 
 // eslint-disable-next-line
 export async function cli(args) {
-   if (args.length === 2) {
-      return showHelp();
-   }
-
    let options = parserArgumentsIntoOptions(args);
    options = await promptForMissingOptions(options);
 
