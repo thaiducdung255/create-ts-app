@@ -1,12 +1,12 @@
 {
    "type": "module",
-   "name": "create-ts",
+   "name": "ts-gun",
    "version": "1.0.0",
    "description": "A CLI to initialize an application using typescript",
    "exports": "src/main.js",
    "bin": {
-      "@mducdung255/create-ts-app": "bin/create-ts-app.js",
-      "create-ts-app": "bin/create-ts-app.js"
+      "@mducdung255/ts-gun": "bin/create-ts-app.js",
+      "ts-gun": "bin/create-ts-app.js"
    },
    "publicConfig": {
       "access": "public"
