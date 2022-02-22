@@ -5,6 +5,7 @@ import { createTsProject } from './main.js';
 function parserArgumentsIntoOptions(rawArgs) {
    const args = arg(
       {
+         '--help': Boolean,
          '--package-manager': 'string',
          '--skip': Boolean,
          '--git': Boolean,
@@ -15,6 +16,7 @@ function parserArgumentsIntoOptions(rawArgs) {
          '--editorconfig': Boolean,
          '-pm': 'package-manager',
          '-s': '--skip',
+         '-h': '--help',
          '-g': '--git',
          '-i': '--install',
          '-n': '--nodemon',
@@ -28,6 +30,7 @@ function parserArgumentsIntoOptions(rawArgs) {
    );
 
    return {
+      help: args['--help'] || false,
       skipPrompts: args['--skip'] || false,
       git: args['--git'] || false,
       runInstall: args['--install'] || false,
@@ -40,9 +43,14 @@ function parserArgumentsIntoOptions(rawArgs) {
 
 // eslint-disable-next-line
 async function promptForMissingOptions(options) {
+   console.log({ options })
    const defaultOptions = {
       packageManager: 'pnpm',
    };
+
+   if (options.help) {
+      return { help: true };
+   }
 
    if (options.skipPrompts) {
       return {
@@ -138,9 +146,37 @@ async function promptForMissingOptions(options) {
    };
 }
 
+function showHelp() {
+   const helps = [
+      'USAGE: ts-gun [OPTION]',
+      'Initalize typescript project with some essential tools',
+      'Example: ts-gun -s\n',
+      'OPTIONS:',
+      '   -h,    --help                 show help menu',
+      '   -s,    --skip                 use pnpm as package manager and install all tools(eslint, install node_module, nodemon, editorconfig, pre-commit-hook, init git repository). Recommended',
+      '   -g,    --git                  initialize new git repository',
+      '   -i,    --install              install node_modules',
+      '   -n,    --nodemon              integrate nodemon to project',
+      '   -e,    --eslint               integrate eslint to project. Use airbnb-base style guide',
+      '   -pch,  --pre-commit-hook      use pre-commit-hook. Will run script "lint" and "test" in package.json file',
+      '   -ecfg, --editorconfig         create .editorconfig file\n',
+   ];
+
+   return process.stdout.write(helps.join('\n'));
+}
+
 // eslint-disable-next-line
 export async function cli(args) {
+   if (args.length === 2) {
+      return showHelp();
+   }
+
    let options = parserArgumentsIntoOptions(args);
    options = await promptForMissingOptions(options);
+
+   if (options.help) {
+      return showHelp();
+   }
+
    await createTsProject(options);
 }

@@ -16,7 +16,7 @@ module.exports = {
    ignorePatterns: ['build/', 'dist/'],
    rules: {
       indent: 'off',
-      '@typescript-eslint/indent': ['error', 3],
+      '@typescript-eslint/indent': ['error', 2],
       'comma-dangle': ['error', 'always-multiline'],
       'import/no-extraneous-dependencies': 'off',
       'import/extensions': 'off',
