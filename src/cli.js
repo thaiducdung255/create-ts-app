@@ -1,4 +1,6 @@
 import arg from 'arg';
+import inquirer from 'inquirer';
+import { createTsProject } from './main.js';
 
 function parserArgumentsIntoOptions(rawArgs) {
    const args = arg(
@@ -37,7 +39,7 @@ function parserArgumentsIntoOptions(rawArgs) {
 }
 
 // eslint-disable-next-line
-function promptForMissingOptions(options) {
+async function promptForMissingOptions(options) {
    const defaultOptions = {
       packageManager: 'pnpm',
    };
@@ -59,7 +61,7 @@ function promptForMissingOptions(options) {
    if (!options.packageManager) {
       questions.push({
          type: 'list',
-         name: 'package manager',
+         name: 'packageManager',
          message: 'Choose your favorite package manager:',
          choices: ['npm', 'yarn', 'pnpm'],
          default: defaultOptions.packageManager,
@@ -102,29 +104,43 @@ function promptForMissingOptions(options) {
       });
    }
 
-   if (options.eslint) {
+   if (options.eslint && options.git) {
       if (!options.preCommitHook) {
          questions.push({
             type: 'confirm',
-            name: 'pre-commit-hook',
+            name: 'preCommitHook',
             message: 'Use pre-commit hook(check eslint before commit) ?',
             default: false,
          });
       }
    }
 
-   if (!options.editorConfig) {
+   if (!options.editorconfig) {
       questions.push({
-         type: 'comfirm',
+         type: 'confirm',
          name: 'editorconfig',
          message: 'create .editorconfig file ?',
          default: false,
       });
    }
+
+   const answers = await inquirer.prompt(questions);
+
+   return {
+      ...options,
+      packageManager: options.packageManager || answers.packageManager,
+      git: options.git || answers.git,
+      runInstall: options.runInstall || answers.runInstall,
+      nodemon: options.nodemon || answers.nodemon,
+      eslint: options.eslint || answers.eslint,
+      preCommitHook: options.preCommitHook || answers.preCommitHook,
+      editorconfig: options.editorconfig || answers.editorconfig,
+   };
 }
 
-export default function cli(args) {
-   const options = parserArgumentsIntoOptions(args);
-   // eslint-disable-next-line
-   console.log({ options });
+// eslint-disable-next-line
+export async function cli(args) {
+   let options = parserArgumentsIntoOptions(args);
+   options = await promptForMissingOptions(options);
+   await createTsProject(options);
 }

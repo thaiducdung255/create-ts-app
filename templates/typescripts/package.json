@@ -1,0 +1,18 @@
+{
+   "name": "name",
+   "version": "1.0.0",
+   "description": "",
+   "main": "dist/main.js",
+   "scripts": {
+      "lint": "eslint . --ext .ts",
+      "dev": "nodemon --config nodemon.json src/main.ts",
+      "build": "tsc",
+      "start": "tsc && ENV=production node dist/main.js"
+   },
+   "author": "",
+   "license": "ISC",
+   "devDependencies": {
+   },
+   "dependencies": {
+   }
+}

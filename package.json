@@ -1,15 +1,21 @@
 {
+   "type": "module",
    "name": "create-ts",
    "version": "1.0.0",
    "description": "A CLI to initialize an application using typescript",
-   "main": "src/main.js",
+   "exports": "src/main.js",
    "bin": {
-      "@mducdung255/create-ts-app": "bin/create-ts-app",
-      "create-ts-app": "bin/create-ts-app"
+      "@mducdung255/create-ts-app": "bin/create-ts-app.js",
+      "create-ts-app": "bin/create-ts-app.js"
    },
    "publicConfig": {
       "access": "public"
    },
+   "files": [
+      "bin/",
+      "src/",
+      "templates/"
+   ],
    "scripts": {
       "test": "echo \"Error: no test specified\"",
       "lint": "eslint ."
@@ -20,12 +26,20 @@
       "nodemon",
       "eslint"
    ],
+   "eslintConfig": {
+      "root": true
+   },
    "author": "mducdung255",
    "license": "MIT",
    "dependencies": {
       "arg": "^5.0.1",
+      "chalk": "^5.0.0",
       "esm": "^3.2.25",
-      "inquirer": "^8.2.0"
+      "execa": "^6.1.0",
+      "inquirer": "^8.2.0",
+      "listr": "^0.14.3",
+      "ncp": "^2.0.0",
+      "pkg-install": "^1.0.0"
    },
    "devDependencies": {
       "eslint": "^8.9.0",

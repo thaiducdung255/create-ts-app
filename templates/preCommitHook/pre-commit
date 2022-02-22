@@ -1,0 +1,33 @@
+#!/bin/sh
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m'
+
+function run_linter() {
+   if npm run lint; then
+      echo -e "${GREEN}Source code linted successfully. No error(s) found.${GREEN}"
+   else
+      echo -e "${RED}[HOOK ERR] Source code linted failed.${NC}"
+      exit 1
+   fi
+}
+
+function run_test() {
+   if npm test; then
+      echo -e "${GREEN}Source code tested successfully. No error(s) found.${GREEN}"
+   else
+      echo -e "${RED}[HOOK ERR] Source code tested failed.${NC}"
+      exit 1
+   fi
+}
+
+echo -e "${GREEN}========================= BEGIN PRECOMIT HOOK ===========================${NC}"
+
+echo -e "${GREEN}[1/2] Running linter...${NC}"
+run_linter
+
+echo -e "${GREEN}[2/2] Running test suits...${NC}"
+run_test
+
+echo -e "${GREEN}========================= END PRECOMIT HOOK ===========================${NC}"
