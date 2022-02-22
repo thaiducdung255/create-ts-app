@@ -39,7 +39,7 @@ async function gitInit(options) {
 }
 
 async function eslintInit(options) {
-   await copy(options.templateDirectory.concat('/eslint'), options.targetDirectory.concat('/.eslintrc.js'), { clobber: false });
+   await copy(options.templateDirectory.concat('/eslint/.eslintrc.js'), options.targetDirectory.concat('/.eslintrc.js'), { clobber: false });
    const installAlias = options.packageManager === 'yarn' ? 'add' : 'install';
 
    const installlArgs = [
