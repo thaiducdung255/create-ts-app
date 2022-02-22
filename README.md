@@ -10,7 +10,7 @@
 * Using npx(recommended): `npx ts-gun -s`
 * Install globally: `npm i -g ts-gun`
 
-## Usage (require to install _ts-gun_ as global dependency):
+## Usage:
 
 * `ts-gun --help` or `ts-gun -h`
 * `ts gun [OPTION]`
