@@ -115,6 +115,6 @@ export async function createTsProject(opts) {
    ]);
 
    await tasks.run();
-   console.info('%s Project is now ready to go', chalk.bold.green('DONE.'));
+   console.info('%s Project is now ready to go. Happy coding!', chalk.bold.green('DONE.'));
    return true;
 }
