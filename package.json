@@ -20,11 +20,17 @@
       "test": "echo \"Warning: no test specified\"",
       "lint": "eslint ."
    },
+   "homepage": "https://github.com/thaiducdung255/ts-gun.git",
+   "repository": {
+      "type": "git",
+      "url": "git+https://github.com/thaiducdung255/ts-gun.git"
+   },
    "keywords": [
       "cli",
       "typescript",
       "nodemon",
-      "eslint"
+      "eslint",
+      "pre-commit-hook"
    ],
    "eslintConfig": {
       "root": true
