@@ -9,11 +9,25 @@ import chalk from 'chalk';
 const access = promisify(fs.access);
 const copy = promisify(ncp);
 
-async function run(cmds) {
-   const result = await execa(...cmds);
+async function run(cmds, options) {
+   const result = await execa(...cmds, {
+      cwd: options.targetDirectory,
+   });
 
    if (result.failed) {
       return Promise.reject(new Error(`Failed to run ${cmds[0]} ${cmds[1].join(' ')}`));
+   }
+
+   return null;
+}
+
+async function projectFolderInit(options) {
+   const result = await execa('mkdir', [options.name], {
+      cwd: process.cwd(),
+   });
+
+   if (result.failed) {
+      return Promise.reject(new Error('Failed to run git init'));
    }
 
    return null;
@@ -25,26 +39,14 @@ async function initTs(options) {
    if (options.runInstall) {
       const installAlias = options.packageManager === 'yarn' ? 'add' : 'install';
       const installCommand = [options.packageManager, [installAlias, '-D', '@types/node', 'typescript', 'ts-node']];
-      return run(installCommand);
-   }
-
-   return null;
-}
-
-async function gitInit(options) {
-   const result = await execa('git', ['init'], {
-      cwd: options.targetDirectory,
-   });
-
-   if (result.failed) {
-      return Promise.reject(new Error('Failed to run git init'));
+      return run(installCommand, options);
    }
 
    return null;
 }
 
 async function eslintInit(options) {
-   await copy(options.templateDirectory.concat('/eslint/.eslintrc.js'), options.targetDirectory.concat('/.eslintrc.js'), { clobber: false });
+   await copy(options.templateDirectory.concat('/eslint'), options.targetDirectory, { clobber: false });
 
    if (options.runInstall) {
       const installAlias = options.packageManager === 'yarn' ? 'add' : 'install';
@@ -59,7 +61,7 @@ async function eslintInit(options) {
          '@typescript-eslint/parser',
       ];
 
-      return run([options.packageManager, installlArgs]);
+      return run([options.packageManager, installlArgs], options);
    }
 
    return null;
@@ -77,7 +79,7 @@ async function nodemonInit(options) {
          'nodemon',
       ];
 
-      return run([options.packageManager, installlArgs]);
+      return run([options.packageManager, installlArgs], options);
    }
 
    return null;
@@ -117,13 +119,19 @@ export async function createTsProject(opts) {
 
    const tasks = new Listr([
       {
-         title: 'Initalize new git repository',
-         task: () => gitInit(options),
+         title: `Create folder ${options.name}`,
+         task: () => projectFolderInit(options),
+         enabled: () => options.name,
+      },
+      {
+         title: 'Initialize new git repository',
+         task: () => run(['git', ['init']], options),
          enabled: () => options.git,
       },
       {
-         title: 'Initalize typescript',
+         title: 'Initialize typescript',
          task: () => initTs(options),
+         enabled: () => options.ts,
       },
       {
          title: 'Integrate eslint',
@@ -133,7 +141,7 @@ export async function createTsProject(opts) {
       {
          title: 'Create .editorconfig file',
          task: () => editorconfigInit(options),
-         enabled: () => options.editorconfig,
+         enabled: () => options.editorConfig,
       },
       {
          title: 'Integrate nodemon',
@@ -147,7 +155,10 @@ export async function createTsProject(opts) {
       },
    ]);
 
+   const startTime = Date.now();
    await tasks.run();
-   console.info('%s Project is now ready to go. Happy coding!', chalk.bold.green('DONE.'));
+   const durationMin = Math.ceil((Date.now() - startTime) / 60000);
+   const projectName = options.name ? options.name.concat(' ') : '';
+   console.info('%s Project %sis now ready to go. Happy coding! (%ss)', chalk.bold.green('DONE.'), chalk.blue(projectName), chalk.blue(durationMin));
    return true;
 }
