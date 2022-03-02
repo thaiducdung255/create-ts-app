@@ -41,18 +41,18 @@
 * Command to check for eslint errors: `npm run lint` or `pnpm lint` or `yarn run lint`
 * Command to run test (not configurated yet): `npm run test` or `pnpm test` or `yarn test`
 
-###### Typescript option
+###### Typescript option:
 * Source code must be placed in `/src` directory, `.js` files will be placed in `/dist` directory. View `tsconfig.json` file for more details
 * Project entry point (first file run when project start) if `--ts` option is set: `/src/main.ts`
 
-###### Nodemon option
+###### Nodemon option:
 * Same as `Typescript option` section. View `nodemon.json` file for more details
 
-###### Eslint option
+###### Eslint option:
 * Use `airbnb-base` as coding style
 * Some rules may not work property for different IDEs. Only tested on Neovim 0.6. Thus, you may need to edit file `.eslintrc.json` if you have problems with eslint or open an issue in the github repository
 
-## Change log
+## Change log:
 ### 2.0.0
 * Change option `--skip` to `-all`
 * Will create a new folder with configuration file if command `ts-gun` is called.
