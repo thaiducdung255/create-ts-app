@@ -14,20 +14,34 @@ function parserArgumentsIntoOptions(rawArgs) {
          '--pre-commit-hook': Boolean,
          '--editorconfig': Boolean,
          '--ts': Boolean,
+         '--name': String,
+         '--yarn': Boolean,
+         '--npm': Boolean,
+         '--pnpm': Boolean,
          '-t': '--ts',
          '-a': '--all',
          '-h': '--help',
          '-g': '--git',
          '-i': '--install',
-         '-n': '--nodemon',
+         '-r': '--nodemon',
          '-l': '--eslint',
          '-p': '--pre-commit-hook',
          '-e': '--editorconfig',
+         '-n': '--name',
       },
       {
          argv: rawArgs.slice(-2),
+         permissive: false,
       },
    );
+
+   let packageManager = 'pnpm';
+
+   if (args['--yarn']) {
+      packageManager = 'yarn';
+   } else if (args['--npm']) {
+      packageManager = 'npm';
+   }
 
    return {
       help: args['--help'] || false,
@@ -39,8 +53,8 @@ function parserArgumentsIntoOptions(rawArgs) {
       preCommitHook: args['--pre-commit-hook'] || false,
       editorConfig: args['--editorconfig'] || false,
       ts: args['--ts'] || false,
-      packageManager: 'pnpm',
-      name: '',
+      packageManager,
+      name: args['--name'] || '',
       targetDirectory: process.cwd(),
    };
 }
@@ -139,17 +153,20 @@ function showHelp() {
       'Initalize typescript project with some essential tools',
       'Example: ts-gun -s\n',
       'OPTIONS:',
+      '          --npm                  use npm as package manager',
+      '          --pnpm                 use pnpm as package manager',
+      '          --yarn                 use yarn as package manager',
       '   -h,    --help                 show help menu',
-      '   -a,    --all                  use pnpm as package manager and install all tools(eslint, install node_module, nodemon, editorconfig, pre-commit-hook, init git repository). Recommended',
-      '   -n,    --name                 project name',
+      '   -a,    --all                  use pnpm as package manager and install all tools(eslint, install node_module, nodemon, editorconfig, pre-commit-hook, init git repository)',
+      '   -n,    --name                 will create a folder with given name in current directory. other configuration files will be placed inside this folder',
       '   -t,    --ts                   initialize typescript to project',
-      '   -k,    --package-manager      package manager(npm, pnpm, yarn) to use. Default: pnpm',
       '   -g,    --git                  initialize new git repository',
-      '   -i,    --install              install node_modules',
+      '   -i,    --install              install node_modules and dependencies for eslint(if eslint option is true), typescript(if ts option is true)',
       '   -r,    --nodemon              integrate nodemon to project',
       '   -e,    --eslint               integrate eslint to project. Use airbnb-base style guide',
-      '   -p,    --pre-commit-hook      use pre-commit-hook. Will run script "lint" and "test" in package.json file',
-      '   -f,    --editorconfig         create .editorconfig file\n',
+      '   -p,    --pre-commit-hook      use pre-commit-hook. Will run script "lint" and "test" in package.json file. .git folder is required',
+      '   -e,    --editorconfig         create .editorconfig file\n',
+      'NOTE: this package is not stable yet, if you have any problem, please go to: https://www.npmjs.com/package/ts-gun for more details\n',
    ];
 
    return process.stdout.write(helps.join('\n'));

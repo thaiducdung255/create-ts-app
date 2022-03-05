@@ -3,7 +3,7 @@
    "name": "ts-gun",
    "version": "2.0.0",
    "description": "A CLI to initialize an application using typescript",
-   "exports": "src/main.js",
+   "exports": "./src/main.js",
    "bin": {
       "@mducdung255/ts-gun": "bin/create-ts-app.js",
       "ts-gun": "bin/create-ts-app.js"

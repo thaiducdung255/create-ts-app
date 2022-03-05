@@ -9,6 +9,11 @@ import chalk from 'chalk';
 const access = promisify(fs.access);
 const copy = promisify(ncp);
 
+function showMissingInstallErr(packages) {
+   const errMsg = `\n%s option --install and -i are disabled.Retry the comand with --install or -i option and a package manager.Or you can install following packages manually:\n${packages.join(' ')}\n`;
+   return console.warn(errMsg, chalk.yellow.bold('WARNING:'));
+}
+
 async function run(cmds, options) {
    const result = await execa(...cmds, {
       cwd: options.targetDirectory,
@@ -21,32 +26,30 @@ async function run(cmds, options) {
    return null;
 }
 
-async function projectFolderInit(options) {
-   const result = await execa('mkdir', [options.name], {
-      cwd: process.cwd(),
-   });
-
-   if (result.failed) {
-      return Promise.reject(new Error('Failed to run git init'));
-   }
-
-   return null;
-}
-
 async function initTs(options) {
    await copy(options.templateDirectory.concat('/typescripts'), options.targetDirectory, { clobber: false });
 
+   const installPackages = ['@types/node', 'typescript', 'ts-node'];
+
    if (options.runInstall) {
       const installAlias = options.packageManager === 'yarn' ? 'add' : 'install';
-      const installCommand = [options.packageManager, [installAlias, '-D', '@types/node', 'typescript', 'ts-node']];
+      const installCommand = [options.packageManager, [installAlias, '-D', ...installPackages]];
       return run(installCommand, options);
    }
 
-   return null;
+   return showMissingInstallErr(installPackages);
 }
 
 async function eslintInit(options) {
    await copy(options.templateDirectory.concat('/eslint'), options.targetDirectory, { clobber: false });
+
+   const installPackages = [
+      'eslint',
+      'eslint-config-airbnb-base',
+      'eslint-plugin-import',
+      '@typescript-eslint/eslint-plugin',
+      '@typescript-eslint/parser',
+   ];
 
    if (options.runInstall) {
       const installAlias = options.packageManager === 'yarn' ? 'add' : 'install';
@@ -54,17 +57,13 @@ async function eslintInit(options) {
       const installlArgs = [
          installAlias,
          '-D',
-         'eslint',
-         'eslint-config-airbnb-base',
-         'eslint-plugin-import',
-         '@typescript-eslint/eslint-plugin',
-         '@typescript-eslint/parser',
+         ...installPackages,
       ];
 
       return run([options.packageManager, installlArgs], options);
    }
 
-   return null;
+   return showMissingInstallErr(installPackages);
 }
 
 async function nodemonInit(options) {
@@ -82,7 +81,7 @@ async function nodemonInit(options) {
       return run([options.packageManager, installlArgs], options);
    }
 
-   return null;
+   return showMissingInstallErr(['nodemon']);
 }
 
 async function preCommitHookInit(options) {
@@ -120,7 +119,7 @@ export async function createTsProject(opts) {
    const tasks = new Listr([
       {
          title: `Create folder ${options.name}`,
-         task: () => projectFolderInit(options),
+         task: () => fs.mkdirSync(options.name),
          enabled: () => options.name,
       },
       {
