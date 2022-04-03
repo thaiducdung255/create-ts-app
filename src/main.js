@@ -156,8 +156,8 @@ export async function createTsProject(opts) {
 
    const startTime = Date.now();
    await tasks.run();
-   const durationMin = Math.ceil((Date.now() - startTime) / 60000);
+   const durationSec = Math.ceil((Date.now() - startTime) / 1000);
    const projectName = options.name ? options.name.concat(' ') : '';
-   console.info('%s Project %sis now ready to go. Happy coding! (%ss)', chalk.bold.green('DONE.'), chalk.blue(projectName), chalk.blue(durationMin));
+   console.info('%s Project %sis now ready to go. Happy coding! (%ss)', chalk.bold.green('DONE.'), chalk.blue(projectName), chalk.blue(durationSec));
    return true;
 }
