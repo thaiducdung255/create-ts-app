@@ -26,6 +26,11 @@ async function run(cmds, options) {
    return null;
 }
 
+async function initGit(options) {
+   await run(['git', ['init']], options);
+   await copy(options.templateDirectory.concat('/git'), options.targetDirectory, { clobber: false });
+}
+
 async function initTs(options) {
    await copy(options.templateDirectory.concat('/typescripts'), options.targetDirectory, { clobber: false });
 
@@ -124,7 +129,7 @@ export async function createTsProject(opts) {
       },
       {
          title: 'Initialize new git repository',
-         task: () => run(['git', ['init']], options),
+         task: () => initGit(options),
          enabled: () => options.git,
       },
       {
@@ -158,6 +163,6 @@ export async function createTsProject(opts) {
    await tasks.run();
    const durationSec = Math.ceil((Date.now() - startTime) / 1000);
    const projectName = options.name ? options.name.concat(' ') : '';
-   console.info('%s Project %sis now ready to go. Happy coding! (%ss)', chalk.bold.green('DONE.'), chalk.blue(projectName), chalk.blue(durationSec));
+   console.info('%s Project %sis ready to go now. Happy coding! (%ss)', chalk.bold.green('DONE.'), chalk.blue(projectName), chalk.blue(durationSec));
    return true;
 }
