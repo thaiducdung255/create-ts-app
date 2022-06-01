@@ -12,8 +12,8 @@
 
 ## Usage:
 
-* `ts-gun --help` or `ts-gun -h` for more details
-* `ts gun` or `ts gun [OPTION]`
+* `ts-gun` or `ts-gun [OPTION]`
+* `ts-gun --help` or `ts-gun -h` for help
 
 #### Options:
 * `-h, --help: show help menu`
