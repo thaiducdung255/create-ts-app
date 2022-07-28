@@ -136,31 +136,31 @@ export async function createTsProject(opts) {
          task: () => initGit(options),
          enabled: () => options.git,
       },
-      // {
-      // title: 'Initialize typescript',
-      // task: () => initTs(options),
-      // enabled: () => options.ts,
-      // },
-      // {
-      // title: 'Integrate eslint',
-      // task: () => eslintInit(options),
-      // enabled: () => options.eslint,
-      // },
-      // {
-      // title: 'Create .editorconfig file',
-      // task: () => editorconfigInit(options),
-      // enabled: () => options.editorConfig,
-      // },
-      // {
-      // title: 'Integrate nodemon',
-      // task: () => nodemonInit(options),
-      // enabled: () => options.nodemon,
-      // },
-      // {
-      // title: 'Integrate git pre-commit hook',
-      // task: () => preCommitHookInit(options),
-      // enabled: () => options.preCommitHook,
-      // },
+      {
+         title: 'Initialize typescript',
+         task: () => initTs(options),
+         enabled: () => options.ts,
+      },
+      {
+         title: 'Integrate eslint',
+         task: () => eslintInit(options),
+         enabled: () => options.eslint,
+      },
+      {
+         title: 'Create .editorconfig file',
+         task: () => editorconfigInit(options),
+         enabled: () => options.editorConfig,
+      },
+      {
+         title: 'Integrate nodemon',
+         task: () => nodemonInit(options),
+         enabled: () => options.nodemon,
+      },
+      {
+         title: 'Integrate git pre-commit hook',
+         task: () => preCommitHookInit(options),
+         enabled: () => options.preCommitHook,
+      },
    ]);
 
    const startTime = Date.now();
