@@ -15,20 +15,24 @@ function showMissingInstallErr(packages) {
 }
 
 async function run(cmds, options) {
-   const result = await execa(...cmds, {
-      cwd: options.targetDirectory,
-   });
+   try {
+      const result = await execa(...cmds, {
+         cwd: options.targetDirectory,
+      });
 
-   if (result.failed) {
-      return Promise.reject(new Error(`Failed to run ${cmds[0]} ${cmds[1].join(' ')}`));
+      if (result.failed) {
+         return Promise.reject(new Error(`Failed to run ${cmds[0]} ${cmds[1].join(' ')}`));
+      }
+
+      return null;
+   } catch (err) {
+      return Promise.reject(err);
    }
-
-   return null;
 }
 
 async function initGit(options) {
    await run(['git', ['init']], options);
-   await copy(options.templateDirectory.concat('/git'), options.targetDirectory, { clobber: false });
+   await copy(options.templateDirectory.concat('/gitignore'), options.targetDirectory.concat('/.gitignore'), { clobber: false });
 }
 
 async function initTs(options) {
@@ -132,31 +136,31 @@ export async function createTsProject(opts) {
          task: () => initGit(options),
          enabled: () => options.git,
       },
-      {
-         title: 'Initialize typescript',
-         task: () => initTs(options),
-         enabled: () => options.ts,
-      },
-      {
-         title: 'Integrate eslint',
-         task: () => eslintInit(options),
-         enabled: () => options.eslint,
-      },
-      {
-         title: 'Create .editorconfig file',
-         task: () => editorconfigInit(options),
-         enabled: () => options.editorConfig,
-      },
-      {
-         title: 'Integrate nodemon',
-         task: () => nodemonInit(options),
-         enabled: () => options.nodemon,
-      },
-      {
-         title: 'Integrate git pre-commit hook',
-         task: () => preCommitHookInit(options),
-         enabled: () => options.preCommitHook,
-      },
+      // {
+      // title: 'Initialize typescript',
+      // task: () => initTs(options),
+      // enabled: () => options.ts,
+      // },
+      // {
+      // title: 'Integrate eslint',
+      // task: () => eslintInit(options),
+      // enabled: () => options.eslint,
+      // },
+      // {
+      // title: 'Create .editorconfig file',
+      // task: () => editorconfigInit(options),
+      // enabled: () => options.editorConfig,
+      // },
+      // {
+      // title: 'Integrate nodemon',
+      // task: () => nodemonInit(options),
+      // enabled: () => options.nodemon,
+      // },
+      // {
+      // title: 'Integrate git pre-commit hook',
+      // task: () => preCommitHookInit(options),
+      // enabled: () => options.preCommitHook,
+      // },
    ]);
 
    const startTime = Date.now();
