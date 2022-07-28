@@ -1,4 +1,4 @@
-lockfileVersion: 5.3
+lockfileVersion: 5.4
 
 specifiers:
   arg: ^5.0.1
@@ -22,7 +22,7 @@ dependencies:
 
 devDependencies:
   eslint: 8.9.0
-  eslint-config-airbnb-base: 15.0.0_1326372bbd2fe519ed5ba5fca843a914
+  eslint-config-airbnb-base: 15.0.0_cmtdok55f7srt3k3ux6kqq5jcq
   eslint-plugin-import: 2.25.4_eslint@8.9.0
   eslint-plugin-react-hooks: 4.3.0_eslint@8.9.0
 
@@ -72,8 +72,10 @@ packages:
       zen-observable:
         optional: true
     dependencies:
-      any-observable: 0.3.0
+      any-observable: 0.3.0_rxjs@6.6.7
       rxjs: 6.6.7
+    transitivePeerDependencies:
+      - zenObservable
     dev: false
 
   /@types/json5/0.0.29:
@@ -147,9 +149,19 @@ packages:
     dependencies:
       color-convert: 2.0.1
 
-  /any-observable/0.3.0:
+  /any-observable/0.3.0_rxjs@6.6.7:
     resolution: {integrity: sha512-/FQM1EDkTsf63Ub2C6O7GuYFDsSXUwsaZDurV0np41ocwq0jthUAYCmhBX9f+KwlaCgIuWyr/4WlUQUBfKfZog==}
     engines: {node: '>=6'}
+    peerDependencies:
+      rxjs: '*'
+      zenObservable: '*'
+    peerDependenciesMeta:
+      rxjs:
+        optional: true
+      zenObservable:
+        optional: true
+    dependencies:
+      rxjs: 6.6.7
     dev: false
 
   /arg/5.0.1:
@@ -341,12 +353,22 @@ packages:
 
   /debug/2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
     dependencies:
       ms: 2.0.0
     dev: true
 
   /debug/3.2.7:
     resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
     dependencies:
       ms: 2.1.2
     dev: true
@@ -448,7 +470,7 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /eslint-config-airbnb-base/15.0.0_1326372bbd2fe519ed5ba5fca843a914:
+  /eslint-config-airbnb-base/15.0.0_cmtdok55f7srt3k3ux6kqq5jcq:
     resolution: {integrity: sha512-xaX3z4ZZIcFLvh2oUNvcX5oEofXda7giYmuplVxoOg5A7EXJMrUyqRgR+mhDhPK8LZ4PttFOBvCYDbX3sUoUig==}
     engines: {node: ^10.12.0 || >=12.0.0}
     peerDependencies:
@@ -468,21 +490,44 @@ packages:
     dependencies:
       debug: 3.2.7
       resolve: 1.22.0
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
-  /eslint-module-utils/2.7.3:
+  /eslint-module-utils/2.7.3_ulu2225r2ychl26a37c6o2rfje:
     resolution: {integrity: sha512-088JEC7O3lDZM9xGe0RerkOMd0EjFl+Yvd1jPWIkMT5u3H9+HC34mWWPnqPrN13gieT9pBOO+Qt07Nb/6TresQ==}
     engines: {node: '>=4'}
+    peerDependencies:
+      '@typescript-eslint/parser': '*'
+      eslint-import-resolver-node: '*'
+      eslint-import-resolver-typescript: '*'
+      eslint-import-resolver-webpack: '*'
+    peerDependenciesMeta:
+      '@typescript-eslint/parser':
+        optional: true
+      eslint-import-resolver-node:
+        optional: true
+      eslint-import-resolver-typescript:
+        optional: true
+      eslint-import-resolver-webpack:
+        optional: true
     dependencies:
       debug: 3.2.7
+      eslint-import-resolver-node: 0.3.6
       find-up: 2.1.0
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /eslint-plugin-import/2.25.4_eslint@8.9.0:
     resolution: {integrity: sha512-/KJBASVFxpu0xg1kIBn9AUa8hQVnszpwgE7Ld0lKAlx7Ie87yzEzCgSkekt+le/YVhiaosO4Y14GDAOc41nfxA==}
     engines: {node: '>=4'}
     peerDependencies:
+      '@typescript-eslint/parser': '*'
       eslint: ^2 || ^3 || ^4 || ^5 || ^6 || ^7.2.0 || ^8
+    peerDependenciesMeta:
+      '@typescript-eslint/parser':
+        optional: true
     dependencies:
       array-includes: 3.1.4
       array.prototype.flat: 1.2.5
@@ -490,7 +535,7 @@ packages:
       doctrine: 2.1.0
       eslint: 8.9.0
       eslint-import-resolver-node: 0.3.6
-      eslint-module-utils: 2.7.3
+      eslint-module-utils: 2.7.3_ulu2225r2ychl26a37c6o2rfje
       has: 1.0.3
       is-core-module: 2.8.1
       is-glob: 4.0.3
@@ -498,6 +543,10 @@ packages:
       object.values: 1.1.5
       resolve: 1.22.0
       tsconfig-paths: 3.12.0
+    transitivePeerDependencies:
+      - eslint-import-resolver-typescript
+      - eslint-import-resolver-webpack
+      - supports-color
     dev: true
 
   /eslint-plugin-react-hooks/4.3.0_eslint@8.9.0:
@@ -1094,6 +1143,7 @@ packages:
       rxjs: 6.6.7
     transitivePeerDependencies:
       - zen-observable
+      - zenObservable
     dev: false
 
   /locate-path/2.0.0:
