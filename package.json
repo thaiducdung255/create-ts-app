@@ -18,7 +18,8 @@
    ],
    "scripts": {
       "test": "echo \"Warning: no test specified\"",
-      "lint": "eslint ."
+      "lint": "eslint .",
+      "build": "npm uninstall -g ts-gun && npm i -g"
    },
    "homepage": "https://github.com/thaiducdung255/ts-gun.git",
    "repository": {
@@ -30,7 +31,8 @@
       "typescript",
       "nodemon",
       "eslint",
-      "pre-commit-hook"
+      "husky",
+      "commitlint"
    ],
    "eslintConfig": {
       "root": true
