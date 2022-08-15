@@ -1,9 +1,9 @@
 ## A CLI to initialize an application using typescript with some preconfigured files for:
 
-* *Nodemon*
-* *Eslint*
-* *Commitlint + Husky*
-* *.editorconfig*
+* Nodemon
+* Eslint
+* Commit lint + Husky
+* .editorconfig
 
 ## Install:
 
@@ -44,25 +44,27 @@
 * Command to start project in watch mode(live reloading source code): `npm run dev` or `pnpm dev` or `yarn run dev`
 * Command to check for eslint errors: `npm run lint` or `pnpm lint` or `yarn run lint`
 * Command to run test (not configurated yet): `npm run test` or `pnpm test` or `yarn test`
+* **Typescript option**:
+ * Source code must be placed in `/src` directory, `.js` files will be placed in `/dist` directory. View `tsconfig.json` file for more details
+ * Project's entry point (first file run when project start) if `--ts` option is set: `/src/main.ts`
+* **Nodemon option**:
+ * Same as `Typescript option` section. View `nodemon.json` file for more details
+ * Required opions: --typescript
 
-###### Typescript option:
-* Source code must be placed in `/src` directory, `.js` files will be placed in `/dist` directory. View `tsconfig.json` file for more details
-* Project's entry point (first file run when project start) if `--ts` option is set: `/src/main.ts`
+* **Eslint option**:
+ * Use `airbnb-base` as coding style
+ * Some rules may not work property for different IDEs. Only tested on Neovim 0.6. Thus, you may need to edit file `.eslintrc.json` if you have problems with eslint or open an issue in the github repository
+ * Known problem: sometimes , newest versions of typescript do not supported by Eslint, you may need to downgrade typescript version to make sure eslint can work
 
-###### Nodemon option:
-* Same as `Typescript option` section. View `nodemon.json` file for more details
-* Required opions: --typescript
+* **Commit lint option**:
+ * Use `husky` and `commitlint` to check commit message is valid or not. Besides, will run `npm lint` and `npm test` every new commits are committed to the repository. More detail about commit lint: https://commitlint.js.org/
+ * Required opions: --eslint, --git
 
-###### Eslint option:
-* Use `airbnb-base` as coding style
-* Some rules may not work property for different IDEs. Only tested on Neovim 0.6. Thus, you may need to edit file `.eslintrc.json` if you have problems with eslint or open an issue in the github repository
-* Known problem: sometimes , newest versions of typescript do not supported by Eslint, you may need to downgrade typescript version to make sure eslint can work
+## Support and Improvement:
+* Open an issue in: https://github.com/thaiducdung255/ts-gun/issues
+* Contact me via Gmail: mducdung255@gmail.com
 
-###### Commitlint option:
-* Use `husky` and `commitlint` to check commit message is valid or not. Besides, will run `npm lint` and `npm test` every new commits are committed to the repository
-* Required opions: --eslint, --git
-
-## Major Change log:
+## Major change logs:
 ### 4.0.0
 * Remove option: --install and its alias -i: always install dependencies
 * Remove option: --pre-commit-hook and its alias -p: integrate this feature in --commitlint options
@@ -83,6 +85,3 @@
 * For `--eslint` option, will create file `.eslintrc.json` instead of `.eslintrc.js`. Because `.eslintrc.json`file supports Schema Store (https://www.schemastore.org/json/)
 * Rename options `-pch` and `-ecfg` to `-p` and `-e`. The old options do not work for commands that use multiple options.
 
-## Support and Improvement:
-* Open an issue in: https://github.com/thaiducdung255/ts-gun/issues
-* Contact me via Gmail: mducdung255@gmail.com
