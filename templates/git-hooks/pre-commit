@@ -30,4 +30,4 @@ run_linter
 echo -e "${GREEN}[2/2] Running test suits...${NC}"
 run_test
 
-echo -e "${GREEN}========================= END PRECOMIT HOOK ===========================${NC}"
+echo -e "${GREEN}========================= END PRECOMIT HOOK =============================${NC}\n"
