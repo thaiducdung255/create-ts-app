@@ -38,8 +38,8 @@
 * **Do not** use both options `--name` and package manager options(`--yarn`, `--npm`, `-pnpm`) in one command: this is the problem of `arg` library. Use `ts-gun` instead
 * Option `--nodemon` currently **only works** for typescript projects. I strongly recommend use typescript instead of javascript
 * Option `--eslint` currently **only works** for typescript projects. I strongly recommend use typescript instead of javascript
+* Option `--commitlint` currently **only works** for typescript projects. I strongly recommend use typescript instead of javascript
 
-###### Commands:
 * Command to start project: `npm start` or `pnpm start` or `yarn start`
 * Command to start project in watch mode(live reloading source code): `npm run dev` or `pnpm dev` or `yarn run dev`
 * Command to check for eslint errors: `npm run lint` or `pnpm lint` or `yarn run lint`
