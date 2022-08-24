@@ -108,6 +108,12 @@ async function integrateCommitLint(options) {
    await run(['npx', ['husky', 'install']], options);
 
    await copy(
+      options.templateDirectory.concat('/commitlint'),
+      options.targetDirectory,
+      { clobber: false },
+   );
+
+   await copy(
       options.templateDirectory.concat('/git-hooks'),
       options.targetDirectory.concat('/.husky'),
       { clobber: false },
